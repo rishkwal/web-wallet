@@ -17,6 +17,7 @@ import { config, history, useAuthContext } from "store/index"
 import Link from "components/link"
 import { Messages } from "components/kratos"
 import { Icon } from "@galoymoney/react"
+import NavBar from "modules/guatt/components/nav-bar"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData
@@ -118,6 +119,8 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
 
   return (
     <>
+      <NavBar back="/welcome"/>
+      <h1 className="form-heading">Enter your email and password</h1>
       <div className="login-form auth-form">
         <form action={flowData?.ui.action} method="POST" onSubmit={onSubmit}>
           <input
@@ -126,10 +129,10 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
             value={nodes?.csrf_token.attributes.value}
           />
           <div className="input-container">
-            <div className="">{translate("Email")}</div>
             <input
               name="identifier"
               type="email"
+              placeholder="Escribe tu correo aquí"
               defaultValue={nodes?.identifier.attributes.value}
               autoComplete="email"
               required
@@ -137,34 +140,32 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
             <Messages messages={nodes?.identifier.messages} />
           </div>
           <div className="input-container">
-            <div className="">{translate("Password")}</div>
             <input
               name="password"
               type="password"
+              placeholder="Contraseña mínima de 8 dígitos"
               autoComplete="current-password"
               required
             />
             <Messages messages={nodes?.password.messages} />
           </div>
+          <div className="forgot-password-link">
+            <Link to="/recovery" className="text-link">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
           <Messages messages={flowData?.ui?.messages} />
           <div className="button-container">
+          <div className="form-links">
+            <Link to="/register" className="text-link">
+                  Crea una cuenta
+            </Link>
+          </div>
             <button className="button" name="method" value="password">
               {translate("Login")}
             </button>
-            <Link to="/">{translate("Cancel")}</Link>
           </div>
         </form>
-      </div>
-      <div className="form-links">
-        <Link to="/register">
-          <Icon name="login" />
-          {translate("Create new account")}
-        </Link>
-        <div className="separator">|</div>
-        <Link to="/recovery">
-          <Icon name="key" />
-          {translate("Recover your account")}
-        </Link>
       </div>
     </>
   )

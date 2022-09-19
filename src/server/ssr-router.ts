@@ -7,6 +7,13 @@ import { config } from "store/index"
 
 const ssrRouter = express.Router({ caseSensitive: true })
 
+// ssrRouter.get("/", (req, res) => {
+//   if(!req.session?.authSession) {
+//     return res.redirect("/welcome")
+//   }
+//   res.redirect("/")
+// })
+
 ssrRouter.get("/verified", (req, res) => {
   req.session = req.session || {}
   req.session.emailVerified = true
@@ -20,6 +27,9 @@ ssrRouter.get("/*", async (req, res) => {
 
     if (!(checkedRoutePath instanceof Error)) {
       if (routeRequiresAuth(checkedRoutePath) && !req.session?.authSession) {
+        if(checkedRoutePath === "/") {
+          return res.redirect("/welcome")
+        }
         return res.redirect("/login?return_to=" + req.url)
       }
 
